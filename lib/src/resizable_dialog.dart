@@ -5,9 +5,10 @@ import './resizable_dialog_position.dart';
 import './resizable_dialog_theme_options.dart';
 
 Future<void> showResizableDialog(
+  {
   Key? key,
-  BuildContext context,
-  Widget title,
+  required BuildContext context,
+  required Widget title,
   ResizableDialogPosition? position,
   Size? size,
   Size? minSize,
@@ -15,7 +16,8 @@ Future<void> showResizableDialog(
   ValueChanged<Size>? onResize,
   ValueChanged<Offset>? onDrag,
   ValueChanged<Rect>? onChange,
-  Widget child,
+  required Widget child,
+}
 ) async {
   return await showDialog(
     context: context,
@@ -86,7 +88,9 @@ class _ResizableDialogState extends State<ResizableDialog> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
 
-    return Stack(
+    return
+  Scaffold(
+     body: Stack(
       fit: StackFit.expand,
       children: [
         Positioned(
@@ -209,6 +213,7 @@ class _ResizableDialogState extends State<ResizableDialog> {
           ),
         ),
       ],
+       ),
     );
   }
 
