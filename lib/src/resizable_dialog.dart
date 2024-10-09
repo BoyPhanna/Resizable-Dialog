@@ -91,6 +91,8 @@ class _ResizableDialogState extends State<ResizableDialog> {
 
     return
   Scaffold(
+            backgroundColor: Colors.transparent,
+
      body: Stack(
       fit: StackFit.expand,
       children: [
