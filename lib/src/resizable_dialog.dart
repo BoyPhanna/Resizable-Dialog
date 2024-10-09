@@ -23,6 +23,7 @@ Future<void> showResizableDialog(
     context: context,
     builder: (context) {
       return Dialog(
+                backgroundColor: Colors.transparent,
         key: key,
         child: ResizableDialog(
           title: title,
