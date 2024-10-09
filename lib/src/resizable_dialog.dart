@@ -85,132 +85,129 @@ class _ResizableDialogState extends State<ResizableDialog> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
 
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            left: offset.dx,
-            top: offset.dy,
-            width: size.width,
-            height: size.height,
-            child: MouseRegion(
-              cursor: currentCursor,
-              onHover: (event) => _updateCursor(
-                  event.localPosition, Size(size.width, size.height)),
-              child: GestureDetector(
-                onPanStart: _onPanStart,
-                onPanUpdate: _onPanUpdate,
-                onPanEnd: _onPanEnd,
-                child: Container(
-                  constraints: const BoxConstraints(
-                    maxWidth: double.infinity,
-                    maxHeight: double.infinity,
-                  ),
-                  padding: const EdgeInsets.all(2.5),
-                  decoration: BoxDecoration(
-                    color: widget.options?.handleColor ??
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned(
+          left: offset.dx,
+          top: offset.dy,
+          width: size.width,
+          height: size.height,
+          child: MouseRegion(
+            cursor: currentCursor,
+            onHover: (event) => _updateCursor(
+                event.localPosition, Size(size.width, size.height)),
+            child: GestureDetector(
+              onPanStart: _onPanStart,
+              onPanUpdate: _onPanUpdate,
+              onPanEnd: _onPanEnd,
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: double.infinity,
+                  maxHeight: double.infinity,
+                ),
+                padding: const EdgeInsets.all(2.5),
+                decoration: BoxDecoration(
+                  color: widget.options?.handleColor ??
+                      Theme.of(context).dialogTheme.surfaceTintColor ??
+                      Theme.of(context).highlightColor,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: widget.options?.borderColor ??
                         Theme.of(context).dialogTheme.surfaceTintColor ??
                         Theme.of(context).highlightColor,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      color: widget.options?.borderColor ??
-                          Theme.of(context).dialogTheme.surfaceTintColor ??
-                          Theme.of(context).highlightColor,
-                      width: 0.75,
-                      style: BorderStyle.solid,
-                    ),
+                    width: 0.75,
+                    style: BorderStyle.solid,
                   ),
-                  child: Stack(
-                    children: [
-                      MouseRegion(
-                        cursor: SystemMouseCursors.basic,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Container(
-                            color: Theme.of(context).dialogBackgroundColor,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                // Header
-                                Container(
-                                  constraints: const BoxConstraints(
-                                    maxWidth: double.infinity,
-                                    maxHeight: 100,
-                                  ),
-                                  color:
-                                      widget.options?.headerBackgroundColor ??
-                                          Theme.of(context)
-                                              .dialogTheme
-                                              .contentTextStyle
-                                              ?.backgroundColor,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onPanUpdate: (details) {
-                                            setState(() {
-                                              offset += details.delta;
-                                              _clampOffset(screenSize);
-                                            });
-                                          },
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            child: widget.title,
-                                          ),
+                ),
+                child: Stack(
+                  children: [
+                    MouseRegion(
+                      cursor: SystemMouseCursors.basic,
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Container(
+                          color: Theme.of(context).dialogBackgroundColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Header
+                              Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: double.infinity,
+                                  maxHeight: 100,
+                                ),
+                                color: widget.options?.headerBackgroundColor ??
+                                    Theme.of(context)
+                                        .dialogTheme
+                                        .contentTextStyle
+                                        ?.backgroundColor,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onPanUpdate: (details) {
+                                          setState(() {
+                                            offset += details.delta;
+                                            _clampOffset(screenSize);
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          child: widget.title,
                                         ),
                                       ),
-                                      IconButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        icon: Icon(widget.options?.closeIcon,
-                                            color:
-                                                widget.options?.closeIconColor),
-                                        splashColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      icon: Icon(widget.options?.closeIcon,
+                                          color:
+                                              widget.options?.closeIconColor),
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                    ),
+                                  ],
                                 ),
-                                // Divider
-                                Divider(
-                                  height: 2,
-                                  thickness: 1,
-                                  color: widget.options?.borderColor ??
-                                      Theme.of(context).highlightColor,
+                              ),
+                              // Divider
+                              Divider(
+                                height: 2,
+                                thickness: 1,
+                                color: widget.options?.borderColor ??
+                                    Theme.of(context).highlightColor,
+                              ),
+                              // Content
+                              Expanded(
+                                child: Container(
+                                  color: widget.options?.backgroundColor ??
+                                      Theme.of(context).dialogBackgroundColor,
+                                  child: widget.child,
                                 ),
-                                // Content
-                                Expanded(
-                                  child: Container(
-                                    color: widget.options?.backgroundColor ??
-                                        Theme.of(context).dialogBackgroundColor,
-                                    child: widget.child,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Positioned.fill(
-                        child: Listener(
-                          behavior: HitTestBehavior.translucent,
-                          onPointerDown: (_) {},
-                          child: Container(),
-                        ),
+                    ),
+                    Positioned.fill(
+                      child: Listener(
+                        behavior: HitTestBehavior.translucent,
+                        onPointerDown: (_) {},
+                        child: Container(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
